@@ -48,8 +48,14 @@ export class Source extends BaseSource<{}> {
     await writeAll(p.stdin, new TextEncoder().encode(bufTexts.join("\n")));
     p.stdin.close();
 
+    let decoded: Completions;
     const output = new TextDecoder().decode(await p.output());
-    const decoded = JSON.parse(output) as Completions;
+    try {
+      decoded = JSON.parse(output) as Completions;
+    } catch (e: unknown) {
+      console.error(output);
+      return [];
+    }
 
     let candidates: Candidate[] = [];
     for (const completion of decoded.completions) {
