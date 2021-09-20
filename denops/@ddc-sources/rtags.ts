@@ -38,12 +38,19 @@ export class Source extends BaseSource<{}> {
       `--unsaved-file=${filename}:${offset}`,
     ];
 
-    const p = Deno.run({
-      cmd: cmdArgs,
-      stdout: "piped",
-      stderr: "piped",
-      stdin: "piped",
-    });
+    let p;
+    try {
+      p = Deno.run({
+        cmd: cmdArgs,
+        stdout: "piped",
+        stderr: "piped",
+        stdin: "piped",
+      });
+    } catch (e) {
+      console.error("[ddc-rtags] Run \"rc\" is failed");
+      console.error("[ddc-rtags] \"rc\" binary seems not installed");
+      return [];
+    }
 
     await writeAll(p.stdin, new TextEncoder().encode(bufTexts.join("\n")));
     p.stdin.close();
@@ -53,6 +60,7 @@ export class Source extends BaseSource<{}> {
     try {
       decoded = JSON.parse(output) as Completions;
     } catch (e: unknown) {
+      console.error("[ddc-rtags] \"rc\" output is invalid");
       console.error(output);
       return [];
     }
