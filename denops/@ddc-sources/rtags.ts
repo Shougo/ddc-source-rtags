@@ -1,28 +1,30 @@
 import {
   BaseSource,
-  Candidate,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v0.13.0/types.ts#^";
-import { Denops, fn } from "https://deno.land/x/ddc_vim@v0.13.0/deps.ts#^";
-import { writeAll } from "https://deno.land/std@0.104.0/io/mod.ts#^";
+  Item,
+} from "https://deno.land/x/ddc_vim@v2.2.0/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddc_vim@v2.2.0/deps.ts";
+import { writeAll } from "https://deno.land/std@0.136.0/io/mod.ts";
 
 type Completions = {
   completions: Completion[];
-}
+};
 
 type Completion = {
   completion: string;
   brief_comment: string;
   signature: string;
   kind: string;
-}
+};
 
-export class Source extends BaseSource<{}> {
-  async gatherCandidates(args: {
+type Params = Record<never, never>;
+
+export class Source extends BaseSource<Params> {
+  async gather(args: {
     denops: Denops;
     options: DdcOptions;
     completeStr: string;
-  }): Promise<Candidate[]> {
+  }): Promise<Item[]> {
     const filename = await fn.bufname(args.denops, "%");
     const line = await fn.line(args.denops, ".");
     const column = await fn.col(args.denops, ".");
@@ -47,8 +49,8 @@ export class Source extends BaseSource<{}> {
         stdin: "piped",
       });
     } catch (e) {
-      console.error("[ddc-rtags] Run \"rc\" is failed");
-      console.error("[ddc-rtags] \"rc\" binary seems not installed");
+      console.error('[ddc-rtags] Run "rc" is failed');
+      console.error('[ddc-rtags] "rc" binary seems not installed');
       return [];
     }
 
@@ -60,16 +62,16 @@ export class Source extends BaseSource<{}> {
     try {
       decoded = JSON.parse(output) as Completions;
     } catch (e: unknown) {
-      console.error("[ddc-rtags] \"rc\" output is invalid");
+      console.error('[ddc-rtags] "rc" output is invalid');
       console.error(output);
       return [];
     }
 
-    let candidates: Candidate[] = [];
+    let candidates: Item[] = [];
     for (const completion of decoded.completions) {
       //console.log(completion);
 
-      let candidate: Candidate = {
+      let candidate: Item = {
         word: completion.completion,
         kind: completion.kind,
         menu: completion.brief_comment,
@@ -89,12 +91,12 @@ export class Source extends BaseSource<{}> {
       candidates.push(candidate);
     }
 
-    await p.status()
+    await p.status();
 
     return candidates;
   }
 
-  params(): {} {
+  params(): Params {
     return {};
   }
 }
