@@ -1,18 +1,18 @@
-*ddc-rtags.txt*	Rtags completion for ddc.vim
+*ddc-source-rtags.txt*	Rtags completion for ddc.vim
 
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
-CONTENTS						*ddc-rtags-contents*
+CONTENTS					*ddc-source-rtags-contents*
 
-Introduction		|ddc-rtags-introduction|
-Install			|ddc-rtags-install|
-Examples		|ddc-rtags-examples|
-Params			|ddc-rtags-params|
+Introduction		|ddc-source-rtags-introduction|
+Install			|ddc-source-rtags-install|
+Examples		|ddc-source-rtags-examples|
+Params			|ddc-source-rtags-params|
 
 
 ==============================================================================
-INTRODUCTION					*ddc-rtags-introduction*
+INTRODUCTION					*ddc-source-rtags-introduction*
 
 This source collects candidates from rtags.
 
@@ -20,7 +20,7 @@ https://github.com/Andersbakken/rtags
 
 
 ==============================================================================
-INSTALL							*ddc-rtags-install*
+INSTALL						*ddc-source-rtags-install*
 
 Please install both "ddc.vim" and "denops.vim".
 
@@ -31,7 +31,7 @@ Note: You need to lunch "rdm" command in the background.
 
 
 ==============================================================================
-EXAMPLES						*ddc-rtags-examples*
+EXAMPLES					*ddc-source-rtags-examples*
 >
 >
 	" Use rtags source.
@@ -47,7 +47,7 @@ EXAMPLES						*ddc-rtags-examples*
 <
 
 ==============================================================================
-PARAMS							*ddc-rtags-params*
+PARAMS						*ddc-source-rtags-params*
 
 
 ==============================================================================

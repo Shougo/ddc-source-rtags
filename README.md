@@ -1,4 +1,4 @@
-# ddc-rtags
+# ddc-source-rtags
 
 rtags completion for ddc.vim
 
