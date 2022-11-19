@@ -23,14 +23,12 @@ Note: You need to lunch "rdm" command in the background.
 ## Configuration
 
 ```vim
-" Use rtags source.
 call ddc#custom#patch_global('sources', ['rtags'])
 
-" Change source options
-call ddc#custom#patch_global('sourceOptions', {
-      \ 'rtags': {
-      \   'mark': 'R',
-      \   'dup': v:true,
-      \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
+call ddc#custom#patch_global('sourceOptions', #{
+      \   rtags: #{
+      \     mark: 'R',
+      \     dup: v:true,
+      \     forceCompletionPattern: '\.\w*|:\w*|->\w*' },
       \ })
 ```

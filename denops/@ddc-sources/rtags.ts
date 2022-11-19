@@ -2,9 +2,9 @@ import {
   BaseSource,
   DdcOptions,
   Item,
-} from "https://deno.land/x/ddc_vim@v3.0.0/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.0.0/deps.ts";
-import { writeAll } from "https://deno.land/std@0.161.0/io/mod.ts";
+} from "https://deno.land/x/ddc_vim@v3.2.0/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.2.0/deps.ts";
+import { writeAll } from "https://deno.land/std@0.165.0/io/mod.ts";
 
 type Completions = {
   completions: Completion[];
