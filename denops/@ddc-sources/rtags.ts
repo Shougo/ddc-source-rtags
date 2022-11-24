@@ -4,7 +4,7 @@ import {
   Item,
 } from "https://deno.land/x/ddc_vim@v3.2.0/types.ts";
 import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.2.0/deps.ts";
-import { writeAll } from "https://deno.land/std@0.165.0/io/mod.ts";
+import { writeAll } from "https://deno.land/std@0.165.0/streams/conversion.ts";
 
 type Completions = {
   completions: Completion[];
@@ -20,7 +20,7 @@ type Completion = {
 type Params = Record<never, never>;
 
 export class Source extends BaseSource<Params> {
-  async gather(args: {
+  override async gather(args: {
     denops: Denops;
     options: DdcOptions;
     completeStr: string;
@@ -48,7 +48,7 @@ export class Source extends BaseSource<Params> {
         stderr: "piped",
         stdin: "piped",
       });
-    } catch (e) {
+    } catch (_e) {
       console.error('[ddc-rtags] Run "rc" is failed');
       console.error('[ddc-rtags] "rc" binary seems not installed');
       return [];
@@ -61,17 +61,17 @@ export class Source extends BaseSource<Params> {
     const output = new TextDecoder().decode(await p.output());
     try {
       decoded = JSON.parse(output) as Completions;
-    } catch (e: unknown) {
+    } catch (_e: unknown) {
       console.error('[ddc-rtags] "rc" output is invalid');
       console.error(output);
       return [];
     }
 
-    let candidates: Item[] = [];
+    const candidates: Item[] = [];
     for (const completion of decoded.completions) {
       //console.log(completion);
 
-      let candidate: Item = {
+      const candidate: Item = {
         word: completion.completion,
         kind: completion.kind,
         menu: completion.brief_comment,
@@ -96,7 +96,7 @@ export class Source extends BaseSource<Params> {
     return candidates;
   }
 
-  params(): Params {
+  override params(): Params {
     return {};
   }
 }
