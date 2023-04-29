@@ -2,9 +2,9 @@ import {
   BaseSource,
   DdcOptions,
   Item,
-} from "https://deno.land/x/ddc_vim@v3.2.0/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.2.0/deps.ts";
-import { writeAll } from "https://deno.land/std@0.165.0/streams/conversion.ts";
+} from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
+import { writeAll } from "https://deno.land/std@0.185.0/streams/conversion.ts";
 
 type Completions = {
   completions: Completion[];
@@ -67,7 +67,7 @@ export class Source extends BaseSource<Params> {
       return [];
     }
 
-    const candidates: Item[] = [];
+    const items: Item[] = [];
     for (const completion of decoded.completions) {
       //console.log(completion);
 
@@ -88,12 +88,12 @@ export class Source extends BaseSource<Params> {
           break;
       }
 
-      candidates.push(candidate);
+      items.push(candidate);
     }
 
     await p.status();
 
-    return candidates;
+    return items;
   }
 
   override params(): Params {

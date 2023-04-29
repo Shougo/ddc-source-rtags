@@ -14,7 +14,7 @@ Params			|ddc-source-rtags-params|
 ==============================================================================
 INTRODUCTION					*ddc-source-rtags-introduction*
 
-This source collects candidates from rtags.
+This source collects items from rtags.
 
 https://github.com/Andersbakken/rtags
 

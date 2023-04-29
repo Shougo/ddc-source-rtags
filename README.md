@@ -2,7 +2,7 @@
 
 rtags completion for ddc.vim
 
-This source collects candidates from rtags.
+This source collects items from rtags.
 
 ## Required
 
