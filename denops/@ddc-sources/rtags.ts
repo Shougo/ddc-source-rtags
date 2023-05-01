@@ -4,7 +4,6 @@ import {
   Item,
 } from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
 import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
-import { writeAll } from "https://deno.land/std@0.185.0/streams/conversion.ts";
 
 type Completions = {
   completions: Completion[];
@@ -31,7 +30,6 @@ export class Source extends BaseSource<Params> {
     const offset = await fn.line2byte(args.denops, line) + column - 2;
     const bufTexts = (await fn.getline(args.denops, 1, line)).slice(0, offset);
     const cmdArgs = [
-      "rc",
       "--absolute-path",
       "--synchronous-completions",
       "--json",
@@ -42,23 +40,30 @@ export class Source extends BaseSource<Params> {
 
     let p;
     try {
-      p = Deno.run({
-        cmd: cmdArgs,
-        stdout: "piped",
-        stderr: "piped",
-        stdin: "piped",
-      });
+      p = new Deno.Command(
+        "rc",
+        {
+          args: cmdArgs,
+          stdout: "piped",
+          stderr: "piped",
+          stdin: "piped",
+        },
+      ).spawn();
     } catch (_e) {
       console.error('[ddc-rtags] Run "rc" is failed');
       console.error('[ddc-rtags] "rc" binary seems not installed');
       return [];
     }
 
-    await writeAll(p.stdin, new TextEncoder().encode(bufTexts.join("\n")));
-    p.stdin.close();
+    const writer = p.stdin.getWriter();
+    await writer.ready;
+    await writer.write(new TextEncoder().encode(bufTexts.join("\n")));
+    writer.releaseLock();
+
+    const { stdout } = await p.output();
 
     let decoded: Completions;
-    const output = new TextDecoder().decode(await p.output());
+    const output = new TextDecoder().decode(stdout);
     try {
       decoded = JSON.parse(output) as Completions;
     } catch (_e: unknown) {
@@ -90,8 +95,6 @@ export class Source extends BaseSource<Params> {
 
       items.push(candidate);
     }
-
-    await p.status();
 
     return items;
   }
