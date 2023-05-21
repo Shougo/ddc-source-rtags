@@ -33,7 +33,6 @@ Note: You need to lunch "rdm" command in the background.
 ==============================================================================
 EXAMPLES					*ddc-source-rtags-examples*
 >
->
 	call ddc#custom#patch_global('sources', ['rtags'])
 	
 	call ddc#custom#patch_global('sourceOptions', #{
