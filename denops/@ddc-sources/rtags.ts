@@ -2,8 +2,8 @@ import {
   BaseSource,
   DdcOptions,
   Item,
-} from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
+} from "https://deno.land/x/ddc_vim@v4.0.4/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddc_vim@v4.0.4/deps.ts";
 
 type Completions = {
   completions: Completion[];
@@ -16,7 +16,7 @@ type Completion = {
   kind: string;
 };
 
-type Params = Record<never, never>;
+type Params = Record<string, never>;
 
 export class Source extends BaseSource<Params> {
   override async gather(args: {
